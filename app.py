@@ -2,12 +2,13 @@ from flask import Flask, render_template
 from mongoengine import *
 app = Flask(__name__)
 # app.run(host='0.0.0.0', port=80)
+connect('testDB')
 class User(Document):
     email = StringField()
     first_name = StringField()
     last_name = StringField()
 
-connect('testDB')
+
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
@@ -25,6 +26,8 @@ def insperation():
 def listUsersTest():
     return User.objects.to_json()
 
-
 if __name__ =="__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(debug=True, port=8080)
+
+#if __name__ =="__main__":
+#    app.run(host='0.0.0.0', port=80)
