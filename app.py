@@ -16,7 +16,7 @@ class User(Document):
 def home():
     for file in os.listfir(app.config['FILES_FOLDER']):
         filename = os.fsdecode(file)
-        path = os.path.join(app.config['FILES_FOLDER'],filename))
+        path = os.path.join(app.config['FILES_FOLDER'],filename)
         f = open(path)
         r = csv.reader(f)
         d = list(r)
