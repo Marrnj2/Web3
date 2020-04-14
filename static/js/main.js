@@ -29,3 +29,13 @@ searchCountry.addEventListener("click",function(){
     });
 });
 
+deleteCountry.addEventListener("click",function(){
+    let deleteCountry = document.getElementById("delete_input");
+    $.ajax({
+        url:"/Countries/"+deleteCountry,
+        type: 'DELETE',
+        success: function(result){
+            console.log("Removed");
+        }
+    });
+});
