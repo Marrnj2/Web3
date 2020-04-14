@@ -1,3 +1,3 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config.from_object('config')
+FILES_FOLDER = os.path.join(basedir, 'files')
