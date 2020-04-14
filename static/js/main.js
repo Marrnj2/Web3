@@ -30,12 +30,19 @@ searchCountry.addEventListener("click",function(){
 });
 
 deleteCountry.addEventListener("click",function(){
-    let deleteCountry = document.getElementById("delete_input");
+    let countryToRemove = document.getElementById("delete_input");
     $.ajax({
-        url:"/Countries/"+deleteCountry,
+        url:"/Countries/"+countryToRemove,
         type: 'DELETE',
         success: function(result){
             console.log("Removed");
         }
+    });
+});
+
+addCountry.addEventListener("click",function(){
+    let countryToAdd = document.getElementById("add_input").value;
+    $.post("/Countries/"+countryToAdd,function(){
+        console.log("Added " + countryToAdd + " to DB");
     });
 });
