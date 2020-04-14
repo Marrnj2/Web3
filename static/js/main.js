@@ -1,9 +1,9 @@
 let showAllBtn = document.getElementById("btn");
 let countryFeild = document.getElementById("CountryFeild");
-var xhttp  = new XMLHttpRequest();
+var searchCountry =  document.getElementById("search_button");
+
 
 showAllBtn.addEventListener("click",function(){
-
 
    country = $.get("/Countries",function(response){
        let country = JSON.parse(response);
@@ -19,3 +19,14 @@ function renderHTML(country){
     
     countryFeild.insertAdjacentHTML('beforeend',htmlString);
 }
+
+searchCountry.addEventListener("click",function(){
+    let searchInput =  document.getElementById("search_input").value;
+
+    country = $.get("/Countries/" + searchInput,function(response){
+        let country = JSON.parse(response);
+        console.log(country.name);
+    });
+
+
+});
