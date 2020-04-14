@@ -1,8 +1,8 @@
 let showAllBtn = document.getElementById("btn");
 let countryFeild = document.getElementById("CountryFeild");
 var searchCountry =  document.getElementById("search_button");
-
-
+let addCountry = document.getElementById("add_button")
+let deleteCountry = document.getElementById("delete_button");
 showAllBtn.addEventListener("click",function(){
 
    country = $.get("/Countries",function(response){
@@ -27,6 +27,5 @@ searchCountry.addEventListener("click",function(){
         let country = JSON.parse(response);
         console.log(country.name);
     });
-
-
 });
+

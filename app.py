@@ -63,9 +63,16 @@ def getCountries(name=None):
     return country.to_json()
 
 
-#@app.route('countrys/<name>', methods=['PUT'])
+@app.route('/Countries/<name>', methods=['DELETE'])
+def deleteCountry(name):
+    Country.objects(name=name).delete()
+    return render_template("showCountries.html")
     
-#@app.route('countrys/<name>',methods=['POST'])
+@app.route('/Countries/<name>',methods=['POST'])
+def saveCountry(name):
+    country = Country(name=name)
+    country.save()
+    return country.to_json()
 
 
 if __name__ =="__main__":
