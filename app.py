@@ -1,28 +1,27 @@
-from flask import Flask, render_template
 from mongoengine import *
+from flask import Flask, render_template
+import csv
+import os
 app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
-connect('testDB')
-class User(Document):
-    email = StringField()
-    first_name = StringField()
-    last_name = StringField()
+connect('CountrieDB')
 
+class Country(Document):
+    name = StringField(required=True)
 
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
 def home():
-    for file in os.listfir(app.config['FILES_FOLDER']):
+    for file in os.listdir(app.config['FILES_FOLDER']):
         filename = os.fsdecode(file)
         path = os.path.join(app.config['FILES_FOLDER'],filename)
         f = open(path)
         r = csv.reader(f)
         d = list(r)
         for data in d:
-            print(data)
-    #User(email="nick.marr@email.com",first_name="Nick",last_name="Marr").save()
+            newCountry = Country(name=data[0])
     return render_template("index.html")
 
 
@@ -31,22 +30,54 @@ def insperation():
     title = 'Insperation'
     return render_template('insperation.html',title=title)
 
-@app.route("/listUsersTest")
-def listUsersTest():
-    return User.objects.to_json()
+@app.route('/loadData')
+def loadData():
+        NZ = Country(name="New Zealand")
+        NZ.save()
+        Korea = Country(name="Korea")
+        Korea.save()
+        all_countrys = [{'name'}]
+        return 'country saved'
 
-@app.route('/users', methods=['GET'])
-@app.route('/users/<user_id>',methods=['GET'])
-def getUsers(user_id=None):
-    users = None
-    if user_id is None:
-        users = User.objects
+@app.route('/showData')
+def showData(country=None):
+    country = Country.objects.get
+    return country.to_json()
+        
+
+
+
+@app.route('/show')
+def showList():
+        return render_template("showCountries.html")
+
+@app.route('/Countries',methods=['GET'])
+@app.route('/Countries/<name>', methods=['GET'])
+def getCountries(name=None):
+
+    country = None
+    if name is None:
+        country = Country.objects
     else:
-        users = User.objects.get
-    return users.to_json()
+        country = Country.objects.get(name=name)
+    return country.to_json()
+
+
+@app.route('/Countries/<name>', methods=['DELETE'])
+def deleteCountry(name):
+    Country.objects(name=name).delete()
+    return render_template("showCountries.html")
     
+@app.route('/Countries/<name>',methods=['POST'])
+def saveCountry(name):
+    country = Country(name=name)
+    country.save()
+    return country.to_json()
+
+
 if __name__ =="__main__":
     app.run(debug=True, port=8080)
+
 
 #if __name__ =="__main__":
 #    app.run(host='0.0.0.0', port=80)
