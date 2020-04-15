@@ -7,7 +7,7 @@ showAllBtn.addEventListener("click",function(){
 
    country = $.get("/Countries",function(response){
        let country = JSON.parse(response);
-        renderHTML(country);
+        console.log(response);
    });
 });
 
