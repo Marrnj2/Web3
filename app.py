@@ -5,23 +5,14 @@ import os
 app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
-connect('CountrieDB')
-
+db =connect('CountryDB')
 class Country(Document):
-    name = StringField(required=True)
-
+    name = StringField()
+    data = DictField()
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
 def home():
-    for file in os.listdir(app.config['FILES_FOLDER']):
-        filename = os.fsdecode(file)
-        path = os.path.join(app.config['FILES_FOLDER'],filename)
-        f = open(path)
-        r = csv.reader(f)
-        d = list(r)
-        for data in d:
-            newCountry = Country(name=data[0])
     return render_template("index.html")
 
 
@@ -32,13 +23,36 @@ def insperation():
 
 @app.route('/loadData')
 def loadData():
-        NZ = Country(name="New Zealand")
-        NZ.save()
-        Korea = Country(name="Korea")
-        Korea.save()
-        all_countrys = [{'name'}]
-        return 'country saved'
+       for file in os.listdir(app.config['FILES_FOLDER']):
+        filename = os.fsdecode(file)
+        path = os.path.join(app.config['FILES_FOLDER'],filename)
+        f = open(path)
+        r = csv.DictReader(f)
+        d = list(r)
+        for data in d:
+            country = Country()
+            dict = {}
+            for key in data:
+                if key == "country":
+                    if(Country.objects(name__exists=key)):
+                        country = Country.objects.get(name=key)
+                        dict = country.objects.get(data)
+                    else:
+                        country = Country(name=key)
 
+                else:
+                    f = filename.replace(".csv","")
+                    if f in dict:
+                        dict[f][key] = data[key]
+                    else:
+                        dict[f] = {key:data[key]}
+                    country = Country(data=dict[f])
+                country.save()
+
+
+            return "Done"
+
+            
 @app.route('/showData')
 def showData(country=None):
     country = Country.objects.get
