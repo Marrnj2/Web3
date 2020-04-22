@@ -5,7 +5,8 @@ import os
 app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
-db =connect('CountryDB')
+db =connect('test')
+db.drop_database('test')
 class Country(Document):
     name = StringField()
     data = DictField()
@@ -23,7 +24,7 @@ def insperation():
 
 @app.route('/loadData')
 def loadData():
-       for file in os.listdir(app.config['FILES_FOLDER']):
+    for file in os.listdir(app.config['FILES_FOLDER']):
         filename = os.fsdecode(file)
         path = os.path.join(app.config['FILES_FOLDER'],filename)
         f = open(path)
@@ -33,24 +34,26 @@ def loadData():
             country = Country()
             dict = {}
             for key in data:
+                    
                 if key == "country":
-                    if(Country.objects(name__exists=key)):
-                        country = Country.objects.get(name=key)
-                        dict = country.objects.get(data)
+                    if Country.objects(name__exists=data[key]) == True: 
+                        country = Country.objects(name=data[key])
+                            
                     else:
-                        country = Country(name=key)
-
+                        country.name = data[key]
+                            
                 else:
                     f = filename.replace(".csv","")
                     if f in dict:
                         dict[f][key] = data[key]
                     else:
                         dict[f] = {key:data[key]}
-                    country = Country(data=dict[f])
-                country.save()
+                    country.data = dict    
+            country.save()
+    
 
-
-            return "Done"
+    countries = Country.objects
+    return countries.to_json()
 
             
 @app.route('/showData')
@@ -73,6 +76,7 @@ def getCountries(name=None):
     if name is None:
         country = Country.objects
     else:
+
         country = Country.objects.get(name=name)
     return country.to_json()
 
@@ -84,8 +88,11 @@ def deleteCountry(name):
     
 @app.route('/Countries/<name>',methods=['POST'])
 def saveCountry(name):
-    country = Country(name=name)
-    country.save()
+    if not Country.objects(name=name):
+        country = Country(name=name)
+        country.save()
+    else:
+        return objects.to_json(),400
     return country.to_json()
 
 
