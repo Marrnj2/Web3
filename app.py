@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
 db =connect('test')
-db.drop_database('test')
+#db.drop_database('test')
 class Country(Document):
     name = StringField()
     data = DictField()
@@ -71,30 +71,33 @@ def showList():
 @app.route('/Countries',methods=['GET'])
 @app.route('/Countries/<name>', methods=['GET'])
 def getCountries(name=None):
-
     country = None
     if name is None:
         country = Country.objects
     else:
+        if Country.objects(name__exists=name) == True:
+            country = Country.objects(name=name)
+        else:
+            return 400
+    return country.to_json(),200
 
-        country = Country.objects.get(name=name)
-    return country.to_json()
-
-
+# Delete method 
 @app.route('/Countries/<name>', methods=['DELETE'])
 def deleteCountry(name):
-    Country.objects(name=name).delete()
-    return render_template("showCountries.html")
-    
+    if Country.objects(name__exists=name) == True:
+        Country.objects(name=name).delete()
+        return 204
+    else:
+        return 400
+# Add country 
 @app.route('/Countries/<name>',methods=['POST'])
 def saveCountry(name):
-    if not Country.objects(name=name):
+    if Country.objects(name__exists=name) == True:
+        return 400
+    else:
         country = Country(name=name)
         country.save()
-    else:
-        return objects.to_json(),400
-    return country.to_json()
-
+        return 201
 
 if __name__ =="__main__":
     app.run(debug=True, port=8080)

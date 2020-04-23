@@ -4,21 +4,14 @@ var searchCountry =  document.getElementById("search_button");
 let addCountry = document.getElementById("add_button")
 let deleteCountry = document.getElementById("delete_button");
 
-function renderHTML(country){
-    let htmlString = "";
-
-        let text = 
-        htmlString += "<p>" + country[0].name + "</p>";
-    
-    countryFeild.insertAdjacentHTML('beforeend',htmlString);
-}
-
 searchCountry.addEventListener("click",function(){
     let searchInput =  document.getElementById("search_input").value;
 
     country = $.get("/Countries/" + searchInput,function(response){
         let country = JSON.parse(response);
         console.log(country.name);
+    }).fail(function(){
+        console.log("I Failed")
     });
 });
 
@@ -38,6 +31,11 @@ deleteCountry.addEventListener("click",function(){
         type: 'DELETE',
         success: function(result){
             console.log("Removed");
+        },
+        statusCode: {
+            400: function(){
+                console.log("Country not found")
+            }
         }
     });
 });
