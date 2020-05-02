@@ -5,7 +5,8 @@ import os
 app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
-db =connect('CountryDB')
+db =connect('test')
+db.drop_database('test')
 class Country(Document):
     name = StringField()
     data = DictField()
@@ -23,7 +24,7 @@ def insperation():
 
 @app.route('/loadData')
 def loadData():
-       for file in os.listdir(app.config['FILES_FOLDER']):
+    for file in os.listdir(app.config['FILES_FOLDER']):
         filename = os.fsdecode(file)
         path = os.path.join(app.config['FILES_FOLDER'],filename)
         f = open(path)
@@ -32,27 +33,24 @@ def loadData():
         for data in d:
             country = Country()
             dict = {}
-            for key in data:
+            for key in data:   
                 if key == "country":
-                    if(Country.objects(name__exists=key)):
-                        country = Country.objects.get(name=key)
-                        dict = country.objects.get(data)
+                    if Country.objects(name__exists=data[key]) == True: 
+                        country = Country.objects(name=data[key])   
                     else:
-                        country = Country(name=key)
-
+                        country.name = data[key]
                 else:
                     f = filename.replace(".csv","")
                     if f in dict:
                         dict[f][key] = data[key]
                     else:
                         dict[f] = {key:data[key]}
-                    country = Country(data=dict[f])
-                country.save()
+                    country.data = dict    
+            country.save()
+    countries = Country.objects
+    return countries.to_json()
 
 
-            return "Done"
-
-            
 @app.route('/showData')
 def showData(country=None):
     country = Country.objects.get
@@ -66,28 +64,50 @@ def showList():
         return render_template("showCountries.html")
 
 @app.route('/Countries',methods=['GET'])
+@app.route('/Countries/',methods=['GET'])
 @app.route('/Countries/<name>', methods=['GET'])
 def getCountries(name=None):
-
-    country = None
-    if name is None:
-        country = Country.objects
+    if not Country.objects():
+        return 'Server Error', 500
     else:
-        country = Country.objects.get(name=name)
-    return country.to_json()
+        country = None
+        if name is None:
+            country = Country.objects
+        else:
+            country = Country.objects(name=name)
+            if(country.count() == 0):
+                return country.to_json(),400
+        return country.to_json(),200
 
 
+# Delete method 
 @app.route('/Countries/<name>', methods=['DELETE'])
 def deleteCountry(name):
-    Country.objects(name=name).delete()
-    return render_template("showCountries.html")
-    
+    if not Country.objects():
+        return 'Server Error', 500
+    if name is None:
+       return 'No Input Found',404
+    else:
+        if not Country.objects(name=name):
+            return 'Not Found',400
+        else:
+            Country.objects(name=name).delete()
+            return 'Success',204
+
+# Add country 
 @app.route('/Countries/<name>',methods=['POST'])
 def saveCountry(name):
-    country = Country(name=name)
-    country.save()
-    return country.to_json()
-
+    if name is None:
+        return 'No input',400
+    elif not (isinstance(name,int)):
+        return 'Numbers not allowed',404
+    else:
+        if Country.objects(name=name):
+            return 'Country Already exists',400
+        else:
+            country = Country(name=name)
+            country.save()
+            return 'Success',201
 
 if __name__ =="__main__":
     app.run(debug=True, port=8080)
