@@ -1,12 +1,12 @@
-let showAllBtn = document.getElementById("btn");
-let countryFeild = document.getElementById("CountryFeild");
-var searchCountry =  document.getElementById("search_button");
-let addCountry = document.getElementById("add_button")
-let deleteCountry = document.getElementById("delete_button");
-
+//let showAllBtn = document.getElementById("btn");
+//let countryFeild = document.getElementById("CountryFeild");
+//var searchCountry =  document.getElementById("search_button");
+//let addCountry = document.getElementById("add_button")
+//let deleteCountry = document.getElementById("delete_button");
+let loadCountries = document.getElementById("loadCountries");
 
 // Search four country
-searchCountry.addEventListener("click",function(){
+/*searchCountry.addEventListener("click",function(){
     let searchInput =  document.getElementById("search_input").value;
     country = $.get("/Countries/" + searchInput,function(response){
         let country = JSON.parse(response);
@@ -14,10 +14,10 @@ searchCountry.addEventListener("click",function(){
     }).fail(function(){
         console.log("I Failed")
     });
-});
+});*/
 
 // Show all countries
-showAllBtn.addEventListener("click",function(){
+loadCountries.addEventListener("click",function(){
 
     country = $.get("/Countries",function(response){
         let country = JSON.parse(response);
@@ -26,7 +26,7 @@ showAllBtn.addEventListener("click",function(){
  });
  
  // Remove country from DB
-deleteCountry.addEventListener("click",function(){
+/*deleteCountry.addEventListener("click",function(){
     let countryToRemove = document.getElementById("delete_input");
     $.ajax({
         url:"/Countries/"+countryToRemove,
@@ -41,8 +41,10 @@ deleteCountry.addEventListener("click",function(){
             }
         }
     });
-});
+});*/
 // Add Country to DB
+/*
+
 addCountry.addEventListener("click",function(){
     let countryToAdd = document.getElementById("add_input").value;
     $.post("/Countries/"+countryToAdd,function(){
@@ -51,3 +53,4 @@ addCountry.addEventListener("click",function(){
         console.log("Country already in database");
     });
 });
+*/
