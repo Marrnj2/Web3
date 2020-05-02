@@ -33,15 +33,12 @@ def loadData():
         for data in d:
             country = Country()
             dict = {}
-            for key in data:
-                    
+            for key in data:   
                 if key == "country":
                     if Country.objects(name__exists=data[key]) == True: 
-                        country = Country.objects(name=data[key])
-                            
+                        country = Country.objects(name=data[key])   
                     else:
                         country.name = data[key]
-                            
                 else:
                     f = filename.replace(".csv","")
                     if f in dict:
@@ -50,12 +47,10 @@ def loadData():
                         dict[f] = {key:data[key]}
                     country.data = dict    
             country.save()
-    
-
     countries = Country.objects
     return countries.to_json()
 
-            
+
 @app.route('/showData')
 def showData(country=None):
     country = Country.objects.get
@@ -69,32 +64,50 @@ def showList():
         return render_template("showCountries.html")
 
 @app.route('/Countries',methods=['GET'])
+@app.route('/Countries/',methods=['GET'])
 @app.route('/Countries/<name>', methods=['GET'])
 def getCountries(name=None):
-
-    country = None
-    if name is None:
-        country = Country.objects
+    if not Country.objects():
+        return 'Server Error', 500
     else:
+        country = None
+        if name is None:
+            country = Country.objects
+        else:
+            country = Country.objects(name=name)
+            if(country.count() == 0):
+                return country.to_json(),400
+        return country.to_json(),200
 
-        country = Country.objects.get(name=name)
-    return country.to_json()
 
-
+# Delete method 
 @app.route('/Countries/<name>', methods=['DELETE'])
 def deleteCountry(name):
-    Country.objects(name=name).delete()
-    return render_template("showCountries.html")
-    
+    if not Country.objects():
+        return 'Server Error', 500
+    if name is None:
+       return 'No Input Found',404
+    else:
+        if not Country.objects(name=name):
+            return 'Not Found',400
+        else:
+            Country.objects(name=name).delete()
+            return 'Success',204
+
+# Add country 
 @app.route('/Countries/<name>',methods=['POST'])
 def saveCountry(name):
-    if not Country.objects(name=name):
-        country = Country(name=name)
-        country.save()
+    if name is None:
+        return 'No input',400
+    elif not (isinstance(name,int)):
+        return 'Numbers not allowed',404
     else:
-        return objects.to_json(),400
-    return country.to_json()
-
+        if Country.objects(name=name):
+            return 'Country Already exists',400
+        else:
+            country = Country(name=name)
+            country.save()
+            return 'Success',201
 
 if __name__ =="__main__":
     app.run(debug=True, port=8080)
