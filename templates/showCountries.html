@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %} Countries {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<button id="btn">Show All Countries</button>
+<div id="CountryFeild"></div>
+
+<div id=search-div>
+    <h6>Search</h6>
+    <input value="" id="search_input" type="text">
+    <button id="search_button">Search</button>
+</div>
+<div>
+    <h6>Add</h6>
+    <input id="add_input" type="text" value="">
+    <button id="add_button">Add</button>
+</div>
+<div>
+    <h6>Delete</h6>
+    <input id="delete_input" type="text">
+    <button id="delete_button">Delete</button>
+
+</div>
+<script src="static/js/main.js"></script>
+{% endblock %}
