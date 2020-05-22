@@ -10,6 +10,7 @@ db.drop_database('test')
 class Country(Document):
     name = StringField()
     data = DictField()
+     
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
@@ -35,10 +36,12 @@ def loadData():
             dict = {}
             for key in data:   
                 if key == "country":
-                    if Country.objects(name__exists=data[key]) == True: 
-                        country = Country.objects(name=data[key])   
-                    else:
+                    countryCount = Country.objects(name=data[key])
+                    if countryCount.count() == 0: 
                         country.name = data[key]
+                    else:
+                        country = countryCount[0]
+                        dict = country.data
                 else:
                     f = filename.replace(".csv","")
                     if f in dict:
@@ -73,6 +76,8 @@ def getCountries(name=None):
         country = None
         if name is None:
             country = Country.objects
+            return country.to_json(),200
+
         else:
             country = Country.objects(name=name)
             if(country.count() == 0):
