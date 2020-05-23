@@ -13,8 +13,11 @@
 	{% endblock %}
     </head>
 <body>
-    {% extends "navigation.html"%}
-    
+    {% block navigation %}
+
+    {% include "navigation.html" %}
+    {% endblock %}
+
 	{% block hero %}
 
     {% endblock %}
