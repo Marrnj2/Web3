@@ -1,72 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
+{% block title %} Home {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>{{title}}</title>
-</head>
+<div class="container">
+    <div class="pt-5"></div>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/index">Website</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/insperation">Insperation</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Filler</a>
-                </li>
-            </ul>
+    <div class="row pt-5 ">
+        <div class="d-flex justify-content-center">
+            <h2>Cool Websites and What I like About Them</h2>
         </div>
-    </nav>
-    <div class="container">
-
-        <div class="row">
-            <div class="col-2">
-            </div>
-            <div class="8">
-                <div class="card">
-                    <img src="Images/holdf.png" alt="Filler" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Thrive</h5>
-                        <p class="card-text">
-                   
-                            
-                            
-                        </p>
+    </div>
+    <div class="pt-5"></div>
+    <div class="row pt-5">
+        <div class="card border-color">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="card-title">Thrive</h5>
+                            <p class="card-text">
+                                Thrive does a really good job at spliting is content into clear sections. It
+                                does this in a
+                                couple of ways.
+                                Firstly content on the page is seperated by large amounts of negative space.
+                                This helps the
+                                websites look
+                                by letting it be free of any clutter. It also helps users of the website
+                                navigate the pages.
+                                Since the
+                                content is seperated you know when content is begining and ending.
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <img src="static/Images/thrive.PNG" alt="Thrive Home Page" class="w-100 p-3">
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="Images/holdf.png" alt="Filler" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Status</h5>
-                        <p class="card-text">
-                    
-                        </p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="Images/holdf.png" alt="Filler" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">3</h5>
-                        <p class="card-text">                           
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="2">
-
             </div>
         </div>
     </div>
-   
-    </div>
+    <div class="pt-5"></div>
 
+    <div class="row pt-5">
+        <div class="card border-color">
+            <div class="card-body bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text">
+                                <img src="static/Images/status.PNG" alt="Status Home Page" class="card-img-top">
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="card-title">Status</h5>
+                            Status uses its inital hero image with its navigation to set the color palete for
+                            the website. The color palete is really
+                            simple composed of only 3 main colors. The image backgrounds on the website also
+                            stick to the same pallete. The limited color
+                            pallet is the main aspect of Status I want to incorperate into my website. The
+                            limited use of color prevents the website
+                            from being overwheliming and interesting enough to stop it being bland.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-
-</html>
+    <div class="pt-5"></div>
+    <div class="row pt-5">
+        <div class="card border-color">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="card-title">Woop</h5>
+                            <p class="card-text">
+                                The navigation bar followes the user around the webpage. This means you can
+                                always
+                                navigate to new areas of the website
+                                without having to scroll back to the top. Another thing about the navigation. It
+                                collapses down when the screen gets to
+                                small. This means those on devices with smaller screens can still easyly explore
+                                the
+                                webpage simply by expanding the nav menu. The thing about the collapsing nav is.
+                                when you expand it, it becomes a differeent version of navigation, leaving
+                                behind the more traditional style of navigation for a clean lookin list
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <img src="static/Images/whoop.PNG" alt="Woop Home Page" class="card-img-top">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-5"></div>
+    <div class="pt-5"></div>
+</div>
+{% endblock %}
