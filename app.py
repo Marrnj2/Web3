@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
 db =connect('test')
-db.drop_database('test')
+
 class Country(Document):
     name = StringField()
     data = DictField()
@@ -17,12 +17,18 @@ class Country(Document):
 def home():
     return render_template("index.html")
 
-
+# Directs users to insperation page
 @app.route('/insperation')
 def insperation():
     title = 'Insperation'
     return render_template('insperation.html',title=title)
+# Drops all tables in the database
+@app.route('/dropData')
+def dropData():
+    db.drop_database('test')
+    return 'Data Gone'
 
+# Loads data from csv's
 @app.route('/loadData')
 def loadData():
     for file in os.listdir(app.config['FILES_FOLDER']):
@@ -60,11 +66,37 @@ def showData(country=None):
     return country.to_json()
         
 
+# List Countries 
+# GET /Countries Lists all countries if it exists
+# GET /Countries/<optional:name> lists the specified country if it exists
+# Optional Parameters
+# name (string) name used to specify the desired country
+# Example
+# Get /Countries
+# Returns
+#[
+#   {
+#       name: "Australia"
+#       data:
+#   },
+#   {
+#       name: "Canada"
+#       data:
+#   }
+#
+# ]
+#  Get /Countries/Rwanda
+#[
+#   {
+#       name: Rwanda
+#       data:
+#   }
+# ]
+# Errors
+# Server side error - status code 500
+# Country was not found - status code  404
+# Successful deletion - status code 200
 
-
-@app.route('/show')
-def showList():
-        return render_template("showCountries.html")
 
 @app.route('/Countries',methods=['GET'])
 @app.route('/Countries/',methods=['GET'])
@@ -81,42 +113,72 @@ def getCountries(name=None):
         else:
             country = Country.objects(name=name)
             if(country.count() == 0):
-                return country.to_json(),400
+                return country.to_json(),404
         return country.to_json(),200
 
 
-# Delete method 
+# Delete Country
+# Removes a country from the database 
+# DELETE /Countries/<name> Deletes the specified country if it exists
+
+# Example 
+# DELETE /Countries/Mongolia
+# returns Success - 204
+# Errors
+# Server side error - 500
+# Bad user request - 400
+# Country was not found - 404
+# Successful deletion - 204
+# Example
+# DELETE /Countries/
+# returns No Input Found status code 400
 @app.route('/Countries/<name>', methods=['DELETE'])
 def deleteCountry(name):
     if not Country.objects():
         return 'Server Error', 500
     if name is None:
-       return 'No Input Found',404
+       return 'No Input Found',400
     else:
         if not Country.objects(name=name):
-            return 'Not Found',400
+            return 'Not Found',404
         else:
             Country.objects(name=name).delete()
             return 'Success',204
 
+
 # Add country 
+# Adds a country to the database
+# POST /Countries/<name> - Adds submited country if it does not yet exist
+
+# Example 
+# POST /Countries/Taiwan
+
+
+# Errors
+# Server side error - 500
+# Bad user request - 400
+# Country was not found - 404
+# Successful addition - 201
+# Example
+# POST /Countries/7
+# returns Numbers are not countries - status code 400
 @app.route('/Countries/<name>',methods=['POST'])
 def saveCountry(name):
     if name is None:
         return 'No input',400
     elif not (isinstance(name,int)):
-        return 'Numbers not allowed',404
+        return 'Numbers are not countries',400
     else:
         if Country.objects(name=name):
-            return 'Country Already exists',400
+            return 'Country already exists',400
         else:
             country = Country(name=name)
             country.save()
             return 'Success',201
 
-if __name__ =="__main__":
-    app.run(debug=True, port=8080)
-
-
 #if __name__ =="__main__":
-#    app.run(host='0.0.0.0', port=80)
+#    app.run(debug=True, port=8080)
+
+
+if __name__ =="__main__":
+    app.run(host='0.0.0.0', port=80)
