@@ -22,6 +22,12 @@ def home():
 def insperation():
     title = 'Insperation'
     return render_template('insperation.html',title=title)
+
+
+@app.route('/documentation')
+def documentation():
+    return render_template('docs.html')
+
 # Drops all tables in the database
 @app.route('/dropData')
 def dropData():
@@ -113,7 +119,7 @@ def getCountries(name=None):
         else:
             country = Country.objects(name=name)
             if(country.count() == 0):
-                return country.to_json(),404
+                return 'Country not found',404
         return country.to_json(),200
 
 
@@ -152,9 +158,9 @@ def deleteCountry(name):
 
 # Example 
 # POST /Countries/Taiwan
-
-
-# Errors
+# Returns 
+# Success - status 201
+# Errors 
 # Server side error - 500
 # Bad user request - 400
 # Country was not found - 404
