@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+{% block title %} Documentation {% endblock %}
+{% block head %}
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+
+{{ super() }}
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row pt-5">
+        <div>
+            <h2>API Documentation</h2>
+
+            <h3>Table of Contents</h3>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#listCountries">List Countries</a></li>
+                <li class="list-group-item"><a href="#deleteCountries">Delete Countries</a></li>
+                <li class="list-group-item"><a href="#addCountries">Add Countries</a></li>
+                <li class="list-group-item"><a href="#error">Error</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row pt-5">
+        <div>
+            <h3 id="listCountries">List Countries</h3>
+            <p> GET /Countries - Lists all countries if it exists</p>
+            <p> GET /Countries/<optional:name> - lists the specified country if it exists</p>
+            <h4> Optional Parameters</h4>
+            <p> name (string) name used to specify the desired country</p>
+            <h4> Example</h4>
+            <p> Get /Countries</p>
+            <p> Returns</p>
+            <div class="card border-color">
+                <div class="card-body">
+                    <div class="container">
+                        <pre><code>
+[
+    {
+        name: "China",
+        data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" } }
+    },
+    {
+        name: "Peru",
+        data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" }}
+    }
+]
+                            </code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Errors</h4>
+            <p>Get Country/Kracador</p>
+            <p>Country not found - status code 404</p>
+        </div>
+
+    </div>
+    <div class="row pt-5">
+        <div>
+            <h3 id="deleteCountries">Delete Country</h3>
+            <p>Removes a country from the database </p>
+            <p>DELETE /Countries/<name> Deletes the specified country if it exists</p>
+            <h4>Required Parameter</h4>
+            <p>name (string) name used to specify the desired country to remove</p>
+            <h4>Example</h4>
+            <p>DELETE /Countries/Mongolia</p>
+            <p>returns Success - 204</p>
+            <h4>Errors</h4>
+            <p> DELETE /Countries/</p>
+            <p>Returns</p>
+            <p>No Input Found status code 400=9</p>
+        </div>
+
+    </div>
+    <div class="row pt-5">
+        <div>
+            <h3 id="addCountries">Add country </h3>
+            <p>Adds a country to the database</p>
+            <p>POST /Countries/<name> - Adds submited country if it does not yet exist</p>
+            <h4>Required Parameter</h4>
+            <p>name (string) name used too add a country to the database</p>
+            <h4>Example</h4>
+            <p>POST /Countries/Taiwan</p>
+            <p>returns Success - 201</p>
+            <h4>Errors</h4>
+            <p>POST /Countries/7</p>
+            <p>Returns</p>
+            <p>Numbers are not countries - status code 400</p>
+        </div>
+    </div>
+    <div class="row pt-5">
+        <div>
+            <h3 id="error">Potential Error Codes</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Status Code</th>
+                        <th scope="col">Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>500</td>
+                        <td>Server Error</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>Request does not exits</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>Bad request</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</div>
+
+
+
+
+
+{% endblock %}
