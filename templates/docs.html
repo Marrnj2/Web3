@@ -3,6 +3,7 @@
 {% block head %}
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+
 {{ super() }}
 {% endblock %}
 {% block content %}
@@ -17,7 +18,7 @@
                 <li class="list-group-item"><a href="#listCountries">List Countries</a></li>
                 <li class="list-group-item"><a href="#deleteCountries">Delete Countries</a></li>
                 <li class="list-group-item"><a href="#addCountries">Add Countries</a></li>
-                <li  class="list-group-item"><a href="#error">Error</a></li>
+                <li class="list-group-item"><a href="#error">Error</a></li>
             </ul>
         </div>
     </div>
@@ -31,18 +32,25 @@
             <h4> Example</h4>
             <p> Get /Countries</p>
             <p> Returns</p>
-            <pre><code>
-            [
-                {
-                    name: "China",
-                    data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" } }
-                },
-                {
-                    name: "Peru",
-                    data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" }}
-                }
-            ]
-        </code></pre>
+            <div class="card border-color">
+                <div class="card-body">
+                    <div class="container">
+                        <pre><code>
+[
+    {
+        name: "China",
+        data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" } }
+    },
+    {
+        name: "Peru",
+        data: { income_per_person_gdppercapita_ppp_inflation_adjusted: {"1800": "736", "1801": "735"}, life_expectancy_years: {"1800": "32", "1801": "32"}, "population_total": {"1800": "330000000", "1801": "332000000" }}
+    }
+]
+                            </code></pre>
+                    </div>
+                </div>
+            </div>
+
             <h4>Errors</h4>
             <p>Get Country/Kracador</p>
             <p>Country not found - status code 404</p>
@@ -87,35 +95,31 @@
             <h3 id="error">Potential Error Codes</h3>
             <table class="table">
                 <thead>
-                  <tr>
-                    <th scope="col">Status Code</th>
-                    <th scope="col">Error</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">Status Code</th>
+                        <th scope="col">Error</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>500</td>
-                    <td>Server Error</td>
-                  </tr>
-                  <tr>
-                    <td>404</td>
-                    <td>Request does not exits</td>
-                  </tr>
-                  <tr>
-                    <td>400</td>
-                    <td>Bad request</td>
-                  </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>Server Error</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>Request does not exits</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>Bad request</td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
 
         </div>
-
-
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-
-
 </div>
 
 
