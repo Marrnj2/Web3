@@ -1,8 +1,10 @@
 from mongoengine import *
 from flask import Flask, render_template
+from flask_cors import CORS
 import csv
 import os
 app = Flask(__name__)
+CORS(app)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
 db =connect('test')
@@ -172,8 +174,6 @@ def deleteCountry(name):
 def saveCountry(name):
     if name is None:
         return 'No input',400
-    elif not (isinstance(name,int)):
-        return 'Numbers are not countries',400
     else:
         if Country.objects(name=name):
             return 'Country already exists',400
@@ -182,9 +182,9 @@ def saveCountry(name):
             country.save()
             return 'Success',201
 
-if __name__ =="__main__":
-    app.run(debug=True, port=8080)
-
-
 #if __name__ =="__main__":
-#    app.run(host='0.0.0.0', port=80)
+#    app.run(debug=True, port=8080)
+
+
+if __name__ =="__main__":
+    app.run(host='0.0.0.0', port=80)
