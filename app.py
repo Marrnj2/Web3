@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 app.config.from_object('config')
 # app.run(host='0.0.0.0', port=80)
-db =connect('test')
+connect(app.config['CountryDB'],username=app.config["marrnj2"],password=app.config['SuperSecure'],authentication_source=app.config['CountryDB'])
 
 class Country(Document):
     name = StringField()
@@ -182,7 +182,7 @@ def saveCountry(name):
             country.save()
             return 'Success',201
 
-#if __name__ =="__main__":
+# if __name__ =="__main__":
 #    app.run(debug=True, port=8080)
 
 
